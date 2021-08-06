@@ -1,10 +1,13 @@
 <?php
-
+require_once $_SERVER['DOCUMENT_ROOT'] . '/CMS/app/models/userManager.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/CMS/app/models/userModel.php';
 	class EditProfileController extends Controller
 	{
+		protected $userManager;
 		public function __construct()
 		{
 			parent::__construct();
+			$this->userManager = new userManager();
 		}
 
 		public function index()
@@ -14,9 +17,7 @@
 			{
 				$user_id = $_SESSION['user_id'];
 				$data = array();
-				$query = "SELECT * FROM users WHERE id='" . $user_id . "'";
-				$usermodel = $this->load->model("userModel");
-				$data["result"] = $usermodel->selectquery($query);
+				$data["result"] = $this->userManager->getUserDetailsByUsername($user_id);	
 				$this->load->view("admin/edit_profile",$data);
 			}else{
 				header('location:http://localhost/CMS/admin/Login');
@@ -29,13 +30,12 @@
 			if(isset($_SESSION['user_id']))
 			{
 				$id = $_POST['id'];
-				$name=$_POST['name'];			
-				$email=$_POST['email'];
-				$username=$_POST['username'];			
-						
-				$update_query = "update users set name='$name' ,email='$email' , username='$username'where id='$id'";
-				$userModel = $this->load->model("userModel");
-				$userModel->updatequery($update_query);			
+				$userDetails = array();
+				$userDetails["name"] = $_POST['name'];
+				$userDetails["email"] = $_POST['email'];
+				$userDetails["username"] = $_POST['username'];
+				$userDetails = new userModel($userDetails);				
+				$this->userManager->updateUserProfile($userDetails,$id);		
 				header('location:http://localhost/CMS/admin/EditProfile');
 			}else{
 				header('location:http://localhost/CMS/admin/Login');

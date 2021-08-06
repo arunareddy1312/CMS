@@ -1,31 +1,81 @@
 <?php 
 
-
 class userModel extends Model
 {
-	public function __construct()
+	private $name;
+	private $email;
+	private $username;
+	private $password;
+	private $role;
+	
+	public function __construct($userDetails)
 	{
 		parent::__construct();
+		$this->name = $userDetails["name"];
+		$this->email = $userDetails["email"];
+		$this->username = $userDetails["username"];
+		$this->password = $userDetails["password"];
+		$this->role = $userDetails["role"];
 	}
 
-	public function selectquery($query)
+	public function getName()
 	{
-		return $this->db->select($query);
+		return $this->name;
 	}
 
-	public function insertquery($query)
+	//setter
+	public function setName($name)
 	{
-		return $this->db->insert($query);
+		$this->name = $name;
 	}
 
-	public function updatequery($query)
+
+	public function getEmail()
 	{
-		return $this->db->update($query);
+		return $this->email;
 	}
 
-	public function deletequery($query)
+	//setter
+	public function setEmail($email)
 	{
-		return $this->db->delete($query);
+		$this->email = $email;
 	}
+
+
+	public function getUsername()
+	{
+		return $this->username;
+	}
+
+	//setter
+	public function setUsername($username)
+	{
+		$this->username = $username;
+	}
+
+
+	public function getPassword()
+	{
+		return $this->password;
+	}
+
+	//setter
+	public function setPassword($password)
+	{
+		$this->password = $password;
+	}
+
+
+	public function getRole()
+	{
+		return $this->role;
+	}
+
+	//setter
+	public function setRole($role)
+	{
+		$this->role = $role;
+	}
+
 }
 ?>

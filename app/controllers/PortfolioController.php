@@ -1,21 +1,22 @@
 <?php
-
+require_once $_SERVER['DOCUMENT_ROOT'] . '/CMS/app/models/portfolioManager.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/CMS/app/models/footerManager.php';
 	class PortfolioController extends Controller
 	{
+		protected $portfolioManager;
+		protected $footerManager;
 		public function __construct()
 		{
 			parent::__construct();
+			$this->portfolioManager = new portfolioManager();
+			$this->footerManager = new footerManager();
 		}
 
 		public function index()
 		{
 			$data = array();
-			$query = "SELECT * FROM portfolio";
-			$portfoliomodel = $this->load->model("portfolioModel");
-			$data["result"] = $portfoliomodel->selectquery($query);	
-			$query = "SELECT * FROM footer";
-			$footermodel = $this->load->model("footerModel");
-			$data["footer"] = $footermodel->selectquery($query);	
+			$data["result"] = $this->portfolioManager->getPortfolioDetails();	
+			$data["footer"] = $this->footerManager->getFooterDetails();
 			$this->load->view("portfolio",$data);
 		}	
 	}

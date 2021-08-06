@@ -1,31 +1,62 @@
-<?php 
-
+<?php
 
 class portfolioModel extends Model
 {
-	public function __construct()
+	private $image;
+	private $filter;
+	private $heading;
+	private $text;
+
+	public function __construct($portfolioDetails)
 	{
 		parent::__construct();
+		$this->image = $portfolioDetails["photo"];
+		$this->filter = $portfolioDetails["filter"];
+		$this->heading = $portfolioDetails["heading"];
+		$this->text = $portfolioDetails["text"];
+	}
+	public function getImage()
+	{
+		return $this->image;
 	}
 
-	public function selectquery($query)
+	//setter
+	public function setImage($image)
 	{
-		return $this->db->select($query);
+		$this->image = $image;
 	}
 
-	public function insertquery($query)
+	public function getFilter()
 	{
-		return $this->db->insert($query);
+		return $this->filter;
 	}
 
-	public function updatequery($query)
+	//setter
+	public function setFilter($filter)
 	{
-		return $this->db->update($query);
+		$this->filter = $filter;
 	}
 
-	public function deletequery($query)
+	public function getHeading()
 	{
-		return $this->db->delete($query);
+		return $this->heading;
+	}
+
+	//setter
+	public function setHeading($heading)
+	{
+		$this->heading = $heading;
+	}
+
+	public function getText()
+	{
+		return $this->text;
+	}
+
+	//setter
+	public function setText($text)
+	{
+		$this->text = $text;
 	}
 }
 ?>

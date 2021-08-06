@@ -7,10 +7,10 @@ class LoginModel extends Model
 	{
 		parent::__construct();
 	}
-
+	
 	public function getdetails($query)
 	{
 		return $this->db->select($query);
 	}
+
 }
-?>

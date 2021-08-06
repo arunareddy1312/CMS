@@ -3,29 +3,50 @@
 
 class serviceModel extends Model
 {
-	public function __construct()
+	private $name;
+	private $heading;
+	private $description;
+	public function __construct($serviceDetails)
 	{
 		parent::__construct();
+		$this->name = $serviceDetails["name"];
+		$this->heading = $serviceDetails["heading"];
+		$this->description = $serviceDetails["description"];
 	}
 
-	public function selectquery($query)
+	public function getName()
 	{
-		return $this->db->select($query);
+		return $this->name;
 	}
 
-	public function insertquery($query)
+	//setter
+	public function setName($name)
 	{
-		return $this->db->insert($query);
+		$this->name = $name;
 	}
 
-	public function updatequery($query)
+	public function getHeading()
 	{
-		return $this->db->update($query);
+		return $this->heading;
 	}
 
-	public function deletequery($query)
+	//setter
+	public function setHeading($heading)
 	{
-		return $this->db->delete($query);
+		$this->heading = $heading;
 	}
+
+
+	public function getDescription()
+	{
+		return $this->description;
+	}
+
+	//setter
+	public function setDescription($description)
+	{
+		$this->description = $description;
+	}
+
 }
 ?>

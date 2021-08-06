@@ -3,29 +3,35 @@
 
 class headerModel extends Model
 {
-	public function __construct()
+	private $heading;
+	private $text;
+	public function __construct($headerDetails)
 	{
 		parent::__construct();
+		$this->heading = $headerDetails["heading"];
+		$this->text = $headerDetails["text"];
 	}
 
-	public function selectquery($query)
+	public function getHeading()
 	{
-		return $this->db->select($query);
+		return $this->heading;
 	}
 
-	public function insertquery($query)
+	//setter
+	public function setHeading($heading)
 	{
-		return $this->db->insert($query);
+		$this->heading = $heading;
 	}
 
-	public function updatequery($query)
+	public function getText()
 	{
-		return $this->db->update($query);
+		return $this->text;
 	}
 
-	public function deletequery($query)
+	//setter
+	public function setText($text)
 	{
-		return $this->db->delete($query);
+		$this->text = $text;
 	}
 }
 ?>

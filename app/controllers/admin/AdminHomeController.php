@@ -1,10 +1,17 @@
 <?php
-
+require_once $_SERVER['DOCUMENT_ROOT'] . '/CMS/app/models/headerManager.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/CMS/app/models/headerModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/CMS/app/models/footerManager.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/CMS/app/models/footerModel.php';
 	class AdminHomeController extends Controller
 	{
+		protected $headerManager;
+		protected $footerManager;
 		public function __construct()
 		{
 			parent::__construct();
+			$this->headerManager = new headerManager();
+			$this->footerManager = new footerManager();
 		}
 
 		public function index()
@@ -12,13 +19,9 @@
 			session_start();
 			if(isset($_SESSION['user_id']))
 			{
-				$data = array();
-				$query = "SELECT * FROM header";
-				$headermodel = $this->load->model("headerModel");
-				$data["header"] = $headermodel->selectquery($query);	
-				$query = "SELECT * FROM footer";
-				$footermodel = $this->load->model("footerModel");
-				$data["footer"] = $footermodel->selectquery($query);				
+				$data = array();			
+				$data["header"] = $this->headerManager->getHeaderDetails();				
+				$data["footer"] = $this->footerManager->getFooterDetails();				
 				$this->load->view("admin/home/admin_home",$data);
 			}else{
 				header('location:http://localhost/CMS/admin/Login');
@@ -30,11 +33,11 @@
 			session_start();
 			if(isset($_SESSION['user_id']))
 			{	
-				$heading=$_POST['heading'];	
-				$text=$_POST['text'];	
-				$insert_query = "insert into header(heading,text) values('$heading','$text')";
-				$headermodel = $this->load->model("headerModel");
-				$headermodel->insertquery($insert_query);
+				$headerDetails = array();
+				$headerDetails["heading"] = $_POST['heading'];
+				$headerDetails["text"]=$_POST['text'];				
+				$headerModel = new headerModel($headerDetails);
+				$this->headerManager->createHeader($headerModel);
 				header('location:http://localhost/CMS/admin/AdminHome');
 			}else{
 				header('location:http://localhost/CMS/admin/Login');
@@ -46,11 +49,11 @@
 			session_start();
 			if(isset($_SESSION['user_id']))
 			{
-				$heading=$_POST['heading'];	
-				$text=$_POST['text'];	
-				$insert_query = "insert into footer(heading,text) values('$heading','$text')";
-				$footermodel = $this->load->model("footerModel");
-				$footermodel->insertquery($insert_query);
+				$footerDetails = array();
+				$footerDetails["heading"] = $_POST['heading'];
+				$footerDetails["text"]=$_POST['text'];				
+				$footerModel = new footerModel($footerDetails);
+				$this->footerManager->createFooter($footerModel);
 				header('location:http://localhost/CMS/admin/AdminHome');
 			}else{
 				header('location:http://localhost/CMS/admin/Login');
@@ -62,9 +65,7 @@
 			if(isset($_SESSION['user_id']))
 			{
 				$data = array();
-				$query = "SELECT * FROM header WHERE id ='$id'";
-				$headermodel = $this->load->model("headerModel");
-				$data["result"] = $headermodel->selectquery($query);			
+				$data["result"] = $this->headerManager->editHeader($id);;			
 				$this->load->view("admin/home/edit_header",$data);
 			}else{
 				header('location:http://localhost/CMS/admin/Login');
@@ -76,9 +77,7 @@
 			if(isset($_SESSION['user_id']))
 			{
 				$data = array();
-				$query = "SELECT * FROM footer WHERE id ='$id'";
-				$footermodel = $this->load->model("footerModel");
-				$data["result"] = $footermodel->selectquery($query);			
+				$data["result"] = $this->footerManager->editFooter($id);			
 				$this->load->view("admin/home/edit_footer",$data);
 			}else{
 				header('location:http://localhost/CMS/admin/Login');
@@ -92,11 +91,11 @@
 			if(isset($_SESSION['user_id']))
 			{
 				$id = $_POST['id'];					
-				$heading=$_POST['heading'];
-				$text=$_POST['text'];			
-				$update_query = "update header set heading='$heading',text='$text'where id='$id'";			
-				$headermodel = $this->load->model("headerModel");
-				$headermodel->updatequery($update_query);			
+				$headerDetails = array();
+				$headerDetails["heading"] = $_POST['heading'];
+				$headerDetails["text"]=$_POST['text'];				
+				$headerModel = new headerModel($headerDetails);
+				$this->headerManager->updateHeader($headerModel,$id);			
 				header('location:http://localhost/CMS/admin/AdminHome');
 			}else{
 				header('location:http://localhost/CMS/admin/Login');
@@ -109,11 +108,11 @@
 			if(isset($_SESSION['user_id']))
 			{
 				$id = $_POST['id'];					
-				$heading=$_POST['heading'];
-				$text=$_POST['text'];			
-				$update_query = "update footer set heading='$heading',text='$text'where id='$id'";			
-				$footermodel = $this->load->model("footerModel");
-				$footermodel->updatequery($update_query);			
+				$footerDetails = array();
+				$footerDetails["heading"] = $_POST['heading'];
+				$footerDetails["text"]=$_POST['text'];				
+				$footerModel = new footerModel($footerDetails);
+				$this->footerManager->updateFooter($footerModel,$id);		
 				header('location:http://localhost/CMS/admin/AdminHome');
 			}else{
 				header('location:http://localhost/CMS/admin/Login');
@@ -124,10 +123,7 @@
 			session_start();
 			if(isset($_SESSION['user_id']))
 			{
-				$data = array();
-				$query = "Delete FROM header WHERE id ='$id'";
-				$headermodel = $this->load->model("headerModel");
-				$headermodel->deletequery($query);			
+				$this->headerManager->deleteHeader($id);		
 				header('location:http://localhost/CMS/admin/AdminHome');
 			}else{
 				header('location:http://localhost/CMS/admin/Login');
@@ -138,10 +134,7 @@
 			session_start();
 			if(isset($_SESSION['user_id']))
 			{
-				$data = array();
-				$query = "Delete FROM footer WHERE id ='$id'";
-				$footermodel = $this->load->model("footerModel");
-				$footermodel->deletequery($query);			
+				$this->footerManager->deleteFooter($id);			
 				header('location:http://localhost/CMS/admin/AdminHome');
 			}else{
 				header('location:http://localhost/CMS/admin/Login');

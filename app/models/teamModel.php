@@ -3,29 +3,49 @@
 
 class teamModel extends Model
 {
-	public function __construct()
+	private $image;
+	private $name;
+	private $designation;
+	public function __construct($teamDetails)
 	{
 		parent::__construct();
+		$this->image = $teamDetails["photo"];
+		$this->name = $teamDetails["name"];
+		$this->designation = $teamDetails["designation"];
 	}
 
-	public function selectquery($query)
+	public function getImage()
 	{
-		return $this->db->select($query);
+		return $this->image;
 	}
 
-	public function insertquery($query)
+	//setter
+	public function setImage($image)
 	{
-		return $this->db->insert($query);
+		$this->image = $image;
 	}
 
-	public function updatequery($query)
+	public function getName()
 	{
-		return $this->db->update($query);
+		return $this->name;
 	}
 
-	public function deletequery($query)
+	//setter
+	public function setName($name)
 	{
-		return $this->db->delete($query);
+		$this->name = $name;
 	}
+
+	public function getDesignation()
+	{
+		return $this->designation;
+	}
+
+	//setter
+	public function setDesignation($designation)
+	{
+		$this->designation = $designation;
+	}
+
 }
 ?>
